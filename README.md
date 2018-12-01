@@ -12,13 +12,21 @@ This was built on MLH's Local Hack Day as a fun project to play around with the 
 
 ## How to deploy
 
-First push the image:
+First, set secrets in Heroku:
+
+```
+LOCATION => Shoreditch
+CLIENT_ID => Foursquare's Client ID
+SECRET => Foursquare's Client Secret
+```
+
+then push the image:
 
 ```sh
 $ heroku container:push web -a lunchideas
 ```
 
-and then run it:
+and run it:
 
 ```sh
 $ heroku container:release web -a lunchideas
