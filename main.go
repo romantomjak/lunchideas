@@ -1,7 +1,8 @@
 package main
 
 import (
-    "encoding/json"
+    "math/rand"
+    "time"
     "os"
     "fmt"
     "net/http"
@@ -29,14 +30,10 @@ func lunchIdeas(w http.ResponseWriter, r *http.Request) {
     fc := NewFoursquareClient(client_id, secret)
     venues := fc.VenuesNearby(location)
 
-    json, err := json.Marshal(venues)
-    if err != nil {
-        log.Error("Failed to serialize JSON response")
-    }
+    rand.Seed(time.Now().Unix()) // initialize global pseudo random generator
+    venue := venues[rand.Intn(len(venues))]
 
-    w.Header().Set("Content-Type", "application/json")
-    w.WriteHeader(http.StatusOK)
-    w.Write(json)
+    fmt.Fprintf(w, "How about %v?", venue.Name)
 }
 
 func main() {
