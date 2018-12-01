@@ -37,7 +37,7 @@ func lunchIdeas(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-    addr := fmt.Sprintf("127.0.0.1:%s", getEnv("PORT", "8080"))
+    addr := fmt.Sprintf(":%s", getEnv("PORT", "8080"))
     log.Infof("Starting server on %s", addr)
     http.HandleFunc("/", lunchIdeas)
     log.Fatal(http.ListenAndServe(addr, nil))
