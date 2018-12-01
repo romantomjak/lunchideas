@@ -4,7 +4,8 @@ import (
     "os"
     "fmt"
     "net/http"
-    "log"
+
+    log "github.com/sirupsen/logrus"
 )
 
 func getEnv(key, fallback string) string {
@@ -15,13 +16,19 @@ func getEnv(key, fallback string) string {
 }
 
 func lunchIdeas(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Hello world!")
+    location := os.Getenv("LOCATION")
+    client_id := os.Getenv("CLIENT_ID")
+    secret := os.Getenv("SECRET")
+
+    fc := NewFoursquareClient(client_id, secret)
+    venues := fc.VenuesNearby(location)
+
+    fmt.Fprintf(w, venues)
 }
 
 func main() {
-    port := getEnv("PORT", "8080")
-    addr := fmt.Sprintf(":%s", port)
-
+    addr := fmt.Sprintf("127.0.0.1:%s", getEnv("PORT", "8080"))
+    log.Infof("Starting server on %s", addr)
     http.HandleFunc("/", lunchIdeas)
     log.Fatal(http.ListenAndServe(addr, nil))
 }
