@@ -1,7 +1,11 @@
 FROM golang
 
-ADD . /go/src/github.com/romantomjak/lunchideas
+WORKDIR /opt/lunchideas
 
-RUN go install github.com/romantomjak/lunchideas
+COPY foursquare.go main.go go.mod go.sum ./
+
+RUN go mod download
+
+RUN go install
 
 CMD /go/bin/lunchideas
